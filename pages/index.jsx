@@ -1,4 +1,5 @@
 // import axios from 'axios';
+import { MongoClient } from 'mongodb';
 import React from "react";
 import MeetupList from "../components/meetups/MeetupList";
 import SecoLayout from '../components/SecoLayout';
@@ -14,13 +15,14 @@ const HomePage = (props) => {
 
 export const getStaticProps = async () => {
   
- const res = await fetch("http://localhost:3000/api/meetups", {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json"
-      }
-})
-  const {data} = await res.json()
+ const client = await MongoClient.connect("mongodb+srv://felonzo:felix4christ@cluster0.iwpwueq.mongodb.net/meetups?retryWrites=true&w=majority")
+
+    const db = client.db()
+
+    const meetupCollection = db.collection("meetups")
+
+    const data = await meetupCollection.find().toArray()
+    client.close()
 
   return {
     props: {
