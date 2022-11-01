@@ -21,7 +21,7 @@ const Detials = (props) => {
 };
 export const getStaticPaths =  async () => {
 
-   const res = await fetch("http://localhost:3000/api/singleMeetup", {
+   const res = await fetch("/api/singleMeetup", {
       method: "GET",
       headers: {
         "Content-type": "application/json"
