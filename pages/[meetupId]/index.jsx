@@ -21,13 +21,14 @@ const Detials = (props) => {
 };
 export const getStaticPaths =  async () => {
 
-   const res = await fetch("/api/singleMeetup", {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json"
-      }
-})
-  const { data } = await res.json()
+   const client = await MongoClient.connect("mongodb+srv://felonzo:felix4christ@cluster0.iwpwueq.mongodb.net/meetups?retryWrites=true&w=majority")
+
+    const db = client.db()
+
+    const meetupCollection = db.collection("meetups")
+
+    const data = await meetupCollection.find({}, {_id: 1}).toArray()
+    client.close()
   return {
     fallback: false,
     paths: data.map(meetup => ({params: {meetupId: meetup._id.toString()}}))
